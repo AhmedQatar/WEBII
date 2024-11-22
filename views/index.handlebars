@@ -1,0 +1,48 @@
+{{!-- Extends the main layout --}}
+{{!-- views/index.handlebars --}}
+{{#> main }}
+  <div class="container my-5">
+    <!-- Welcome Card -->
+    <div class="card text-center">
+      <div class="card-header bg-primary text-white">
+        <h2>Welcome to the Language Exchange App</h2>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          This application helps you connect with native speakers and language learners around the world.
+          Practice your language skills with real people, in real-time!
+        </p>
+        <a href="/auth/login" class="btn btn-primary btn-lg mx-2">Login</a>
+        <a href="/auth/register" class="btn btn-secondary btn-lg mx-2">Register</a>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row mt-5">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Connect with Native Speakers</h5>
+            <p class="card-text">Find language partners who are native speakers in the language you’re learning.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Easy to Use</h5>
+            <p class="card-text">Simple and intuitive interface, powered by CoreUI, to enhance your learning experience.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Flexible Chat Options</h5>
+            <p class="card-text">Engage in conversations through our text messaging system, and eventually explore audio and video features.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/main}}
