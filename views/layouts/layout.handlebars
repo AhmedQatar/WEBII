@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- {{!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,4 +14,44 @@
     <!-- CoreUI JS -->
     <script src="/js/coreui.bundle.min.js"></script>
 </body>
-</html>
+</html> --}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/coreui.min.css">
+    <style>
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 1em;
+        }
+        nav a {
+            color: white;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        {{#if isAuthenticated}}
+            <a href="/profile">Profile</a>
+            <a href="/messages">Messages</a>
+            <a href="/auth/logout">Logout</a>
+        {{else}}
+            <a href="/auth/login">Login</a>
+            <a href="/auth/register">Register</a>
+        {{/if}}
+    </nav>
+    {{{body}}}
+  <!-- CoreUI JS -->
+  <script src="/js/coreui.bundle.min.js"></script>
+</body>
+</html> 

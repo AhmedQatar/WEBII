@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const userRepository = require('../../persistence/repositories/userRepository');
 const User = require('../models/userModel');
 
-async function registerUser(email, password) {
+async function registerUser(email, password,fluentLanguages, learningLanguages,) {
     // Validate email and password
     if (!User.validateEmail(email)) {
         throw new Error('Invalid email format');
@@ -17,7 +17,7 @@ async function registerUser(email, password) {
     }
 
     // Transform user data and hash the password
-    const user = User.transformData({ email, password });
+    const user = User.transformData({ email, password ,fluentLanguages, learningLanguages});
     user.password = await bcrypt.hash(password, 12);
 
     await userRepository.createUser(user);
@@ -30,7 +30,8 @@ async function authenticateUser(email, password) {
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
+    
+        if (!isPasswordValid) {
         throw new Error('Invalid email or password');
     }
 

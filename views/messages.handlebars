@@ -1,0 +1,32 @@
+    
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <h1>Chat</h1>
+
+    <div class="messages">
+        {{#each messages}}
+        <div class="message {{#if (eq sender._id ../currentUserId)}}outgoing{{else}}incoming{{/if}}">
+            <p><strong>{{sender.email}}:</strong> {{content}}</p>
+            <small>{{timestamp}}</small>
+        </div>
+        {{/each}}
+    </div>
+
+    <form action="/messages/{{recipientId}}" method="POST">
+        <textarea name="content" placeholder="Type your message..." required></textarea>
+        <button type="submit">Send</button>
+    </form>
+
+    <a href="/profile">Back to Profile</a>
+</body>
+
+</html>

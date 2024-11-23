@@ -1,11 +1,244 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- CoreUI CSS -->
+    <link rel="stylesheet" href="/css/coreui.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .profile-photo {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .profile-photo img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Welcome to your profile</h1>
-    <p>Your email: {{email}}</p>
-    <a href="/auth/logout">Logout</a>
+    <div class="container">
+        <h1>User Profile</h1>
+
+        <!-- Profile Details -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 30%;">Field</th>
+                    <th class="text-center" style="width: 70%;">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Email</th>
+                    <td>{{email}}</td>
+                </tr>
+                <tr>
+                    <th>Profile Photo</th>
+                    <td class="text-center">
+                        {{#if profilePhoto}}
+                        <img src="{{profilePhoto}}" alt="Profile Photo" class="rounded-circle" width="150" height="150">
+                        {{else}}
+                        No photo uploaded
+                        {{/if}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Fluent Languages</th>
+                    <td>
+                        {{#if fluentLanguages.length}}
+                        {{#each fluentLanguages}}
+                        <span class="badge bg-success">{{this}}</span>
+                        {{/each}}
+                        {{else}}
+                        <span>No fluent languages specified.</span>
+                        {{/if}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Learning Languages</th>
+                    <td>
+                        {{#if learningLanguages.length}}
+                        {{#each learningLanguages}}
+                        <span class="badge bg-info">{{this}}</span>
+                        {{/each}}
+                        {{else}}
+                        <span>No learning languages specified.</span>
+                        {{/if}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Badges</th>
+                    <td>
+                        {{#if badges.length}}
+                        {{#each badges}}
+                        <span class="badge bg-warning">{{this}}</span>
+                        {{/each}}
+                        {{else}}
+                        No badges earned yet.
+                        {{/if}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Contacts</th>
+                    <td>
+                        {{#if contacts.length}}
+                        <ul>
+                            {{#each contacts}}
+                            <li>
+                                {{this}}
+                                <a href="/profile/remove-contact/{{this}}" class="btn btn-sm btn-danger ms-2">Remove</a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{else}}
+                        <span>No contacts added yet.</span>
+                        {{/if}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Blocked Users</th>
+                    <td>
+                        {{#if blockedUsers.length}}
+                        <ul>
+                            {{#each blockedUsers}}
+                            <li>
+                                {{this}}
+                                <a href="/profile/unblock-user/{{this}}" class="btn btn-sm btn-success ms-2">Unblock</a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{else}}
+                        <span>No users blocked yet.</span>
+                        {{/if}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Registration Date</th>
+                    <td>{{registrationDate}}</td>
+                </tr>
+                <tr>
+                    <th>Last Login</th>
+                    <td>{{lastLogin}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Update Details Form -->
+        <h2 class="mt-4">Update Your Details</h2>
+        <form method="POST" action="/profile/update" class="mt-4">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" value="{{email}}" required>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control">
+                <small class="text-muted">Leave blank if you do not wish to change your password.</small>
+            </div>
+
+            <!-- Profile Photo -->
+            <div class="mb-3">
+                <label for="profilePhoto" class="form-label">Profile Photo URL</label>
+                <input type="text" id="profilePhoto" name="profilePhoto" class="form-control" value="{{profilePhoto}}">
+            </div>
+
+            <!-- Fluent Languages -->
+            <div class="mb-3">
+                <label for="fluentLanguages" class="form-label">Fluent Languages (comma-separated)</label>
+                <input type="text" id="fluentLanguages" name="fluentLanguages" class="form-control"
+                    value="{{fluentLanguages}}">
+            </div>
+
+            <!-- Learning Languages -->
+            <div class="mb-3">
+                <label for="learningLanguages" class="form-label">Learning Languages (comma-separated)</label>
+                <input type="text" id="learningLanguages" name="learningLanguages" class="form-control"
+                    value="{{learningLanguages}}">
+            </div>
+
+            <!-- Badges -->
+            <div class="mb-3">
+                <label for="badges" class="form-label">Badges (comma-separated)</label>
+                <input type="text" id="badges" name="badges" class="form-control" value="{{badges}}">
+            </div>
+
+
+           <h3>Manage Contacts and Blocked Users</h3>
+
+            <!-- Add Contact -->
+            <div class="mb-3">
+                <label for="newContact" class="form-label">Add New Contact (Email or ID)</label>
+                <input type="text" id="newContact" name="newContact" class="form-control"
+                    placeholder="Enter contact email or ID">
+            </div>
+
+            <!-- Block User -->
+            <div class="mb-3">
+                <label for="blockUser" class="form-label">Block User (Email or ID)</label>
+                <input type="text" id="blockUser" name="blockUser" class="form-control"
+                    placeholder="Enter user email or ID">
+            </div>
+
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+
+
+
+
+        <!-- Logout Button -->
+        <a href="/auth/logout" class="btn btn-danger mt-3">Logout</a>
+    </div>
+
+    <!-- CoreUI JS -->
+    <script src="/js/coreui.bundle.min.js"></script>
 </body>
+
 </html>

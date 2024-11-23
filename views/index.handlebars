@@ -1,5 +1,6 @@
 {{!-- Extends the main layout --}}
-{{!-- views/index.handlebars --}}
+{{!-- public/views/index.handlebars --}}
+
 {{#> main }}
   <div class="container my-5">
     <!-- Welcome Card -->
@@ -45,4 +46,27 @@
       </div>
     </div>
   </div>
+
+  {{!-- Show messages only if authenticated --}}
+  {{#if isAuthenticated}}
+  <h1>Messages</h1>
+<form method="POST" action="/messages/send">
+    <label>Receiver ID:</label>
+    <input type="text" name="receiver" required>
+    
+    <label>Message:</label>
+    <textarea name="content" required></textarea>
+    
+    <button type="submit">Send</button>
+</form>
+
+<h2>Conversation</h2>
+<ul>
+    {{#each messages}}
+        <li><strong>{{this.sender}}</strong>: {{this.content}}</li>
+    {{else}}
+        <li>No messages yet.</li>
+    {{/each}}
+</ul>  
+{{/if}}
 {{/main}}
